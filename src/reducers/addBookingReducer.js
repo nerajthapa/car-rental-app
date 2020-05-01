@@ -5,7 +5,8 @@ export default function (state = initalState, action) {
   //console.log(action);
   switch (action.type) {
     case ADD_BOOKING: {
-      console.log("from add booking reducer", action);
+      console.log("from add booking reducer state", state);
+      console.log("from add booking reducer action", action);
       return action.payload || false;
     }
     default:

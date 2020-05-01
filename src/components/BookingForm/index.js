@@ -4,6 +4,8 @@ import { render } from "react-dom";
 import Styles from "./Styles";
 import { Form, Field } from "react-final-form";
 import { connect } from "react-redux";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import * as actions from "../../actions";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -14,32 +16,32 @@ const onSubmit = async (values) => {
 };
 
 const FinalForm = (props) => {
-  console.log(props.addBookingAction("hi dude"));
+  // console.log(props.addBookingAction("hi dude"));
   return (
     <Styles>
-      <h1>React Final Form - Simple Example</h1>
-      <a
+      <h1>Booking Form</h1>
+      {/* <a
         href="https://final-form.org/react"
         target="_blank"
         rel="noopener noreferrer"
       >
         Read Docs
-      </a>
+      </a> */}
       <Form
         onSubmit={onSubmit}
-        initialValues={{ stooge: "larry", employed: false }}
+        // initialValues={{ stooge: "larry", employed: false }}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
           <form onSubmit={handleSubmit}>
             <div>
-              <label>First Name</label>
+              <label>Name</label>
               <Field
-                name="firstName"
+                name="name"
                 component="input"
                 type="text"
-                placeholder="First Name"
+                placeholder="Name"
               />
             </div>
-            <div>
+            {/* <div>
               <label>Last Name</label>
               <Field
                 name="lastName"
@@ -47,8 +49,22 @@ const FinalForm = (props) => {
                 type="text"
                 placeholder="Last Name"
               />
-            </div>
+            </div> */}
             <div>
+              <label>Phoni</label>
+              <PhoneInput
+                containerStyle={{ flex: 1 }}
+                country={"in"}
+                countryCodeEditable={false}
+                // disableCountryCode
+                disableDropdown
+                // enableSearch
+                // value={this.state.phone}
+                // onChange={(phone) => this.setState({ phone })}
+              />
+            </div>
+
+            {/* <div>
               <label>Employed</label>
               <Field name="employed" component="input" type="checkbox" />
             </div>
@@ -144,11 +160,11 @@ const FinalForm = (props) => {
                   Curly
                 </label>
               </div>
-            </div>
-            <div>
+            </div> */}
+            {/* <div>
               <label>Notes</label>
               <Field name="notes" component="textarea" placeholder="Notes" />
-            </div>
+            </div> */}
             <div className="buttons">
               <button type="submit" disabled={submitting || pristine}>
                 Submit
@@ -161,7 +177,7 @@ const FinalForm = (props) => {
                 Reset
               </button>
             </div>
-            <pre>{JSON.stringify(values, 0, 2)}</pre>
+            {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
           </form>
         )}
       />

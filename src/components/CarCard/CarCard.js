@@ -1,6 +1,9 @@
 import React from "react";
 import "./CarCard.sass";
 import { connect } from "react-redux";
+import { withRouter } from 'react-router-dom';
+import * as actions from "../../actions";
+
 
 function getButtonText(isBooked, isSelected) {
   if (isBooked) return "Not Available";
@@ -19,7 +22,7 @@ function CarCard(props) {
     // rent ,
     // isBooked,
     // location,
-    isSelected= false,
+    isSelected = false,
     // transmission
     id,
     name,
@@ -32,7 +35,7 @@ function CarCard(props) {
     img,
     bookingDetails,
   } = props.car;
-//   console.log("props from carCard", props);
+  //   console.log("props from carCard", props);
   // const id = 1, name = "BMW", seats = 3,price = "$100000",isSelected = false, fuelType= "petrol";
   // // const isBooked = availability.indexOf(props.startDate.day()) === -1;
   // const isBooked = false;
@@ -59,9 +62,19 @@ function CarCard(props) {
       <footer className="backgrounded">
         <span className="price-tag">&#8377;{rent}</span>
         <button
-          className={isSelected ? "selected" : ""}
+          // className={isSelected ? "selected" : ""}
           disabled={isBooked}
-          onClick={() => props.onSelect(id)}
+          onClick={() => {
+            // let updatedCarsDetail = props.carsDetail.map((carDetail)=> {
+            //   if(carDetail.id !== id){
+            //     return carDetail
+            //   }
+            //   carDetail.isBooked = true;
+            //   return carDetail;
+            // })
+            // props.addBookingAction(updatedCarsDetail)
+            props.history.push('/booking-form')
+          }}
         >
           {getButtonText(isBooked, isSelected)}
         </button>
@@ -70,9 +83,9 @@ function CarCard(props) {
   );
 }
 
-// function mapStateToProps(state){
-//     return { carDetails: state.carDetails }
-// }
+function mapStateToProps(state) {
+  return { carsDetail: state.carsDetail };
+}
 
-// export default connect(mapStateToProps)(CarCard);
-export default CarCard;
+export default connect(mapStateToProps, actions)(withRouter(CarCard));
+// export default CarCard;
