@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 import { ADD_BOOKING } from './types';
 
 // export const fetchUser = () => {
@@ -21,7 +21,7 @@ export const addBookingAction = (values, history) => {
         console.log("values from addBookingAction", values)
         // const res = await axios.post('/api/surveys', values);
         // history.push('/surveys');
-        // dispatch({ type: ADD_BOOKING, payload: res.data });
+        dispatch({ type: ADD_BOOKING, payload: values});
     }
     // console.log(values);
     // return { type: 'submit_survey' };

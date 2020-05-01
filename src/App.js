@@ -15,7 +15,7 @@ function App() {
      <BrowserRouter>
          <div>
              {/* <Header /> */}
-             <Route path="/" component={CarCard} />
+             <Route exact path="/" component={CarCard} />
              <Route exact path="/booking-form" component={FinalForm} />
              {/* <Route path="/surveys/new" component={Surveynew} /> */}
          </div>
