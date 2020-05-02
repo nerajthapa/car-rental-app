@@ -1,192 +1,174 @@
-/* eslint-disable jsx-a11y/accessible-emoji */
-import React from "react";
-import { render } from "react-dom";
+import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import Styles from "./Styles";
 import { Form, Field } from "react-final-form";
 import { connect } from "react-redux";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import moment from 'moment'
+import ModalPopUp from "../ModalPopUp";
 import * as actions from "../../actions";
 
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-const onSubmit = async (values) => {
-  await sleep(300);
-  window.alert(JSON.stringify(values, 0, 2));
-};
-
-const FinalForm = (props) => {
-  // console.log(props.addBookingAction("hi dude"));
+const phoneAdapter = ({ input }) => {
+  console.log("props from phoni", input);
   return (
-    <Styles>
-      <h1>Booking Form</h1>
-      {/* <a
-        href="https://final-form.org/react"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Read Docs
-      </a> */}
-      <Form
-        onSubmit={onSubmit}
-        // initialValues={{ stooge: "larry", employed: false }}
-        render={({ handleSubmit, form, submitting, pristine, values }) => (
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label>Name</label>
-              <Field
-                name="name"
-                component="input"
-                type="text"
-                placeholder="Name"
-              />
-            </div>
-            {/* <div>
-              <label>Last Name</label>
-              <Field
-                name="lastName"
-                component="input"
-                type="text"
-                placeholder="Last Name"
-              />
-            </div> */}
-            <div>
-              <label>Phoni</label>
-              <PhoneInput
-                containerStyle={{ flex: 1 }}
-                country={"in"}
-                countryCodeEditable={false}
-                // disableCountryCode
-                disableDropdown
-                // enableSearch
-                // value={this.state.phone}
-                // onChange={(phone) => this.setState({ phone })}
-              />
-            </div>
-
-            {/* <div>
-              <label>Employed</label>
-              <Field name="employed" component="input" type="checkbox" />
-            </div>
-            <div>
-              <label>Favorite Color</label>
-              <Field name="favoriteColor" component="select">
-                <option />
-                <option value="#ff0000">❤️ Red</option>
-                <option value="#00ff00">💚 Green</option>
-                <option value="#0000ff">💙 Blue</option>
-              </Field>
-            </div>
-            <div>
-              <label>Toppings</label>
-              <Field name="toppings" component="select" multiple>
-                <option value="chicken">🐓 Chicken</option>
-                <option value="ham">🐷 Ham</option>
-                <option value="mushrooms">🍄 Mushrooms</option>
-                <option value="cheese">🧀 Cheese</option>
-                <option value="tuna">🐟 Tuna</option>
-                <option value="pineapple">🍍 Pineapple</option>
-              </Field>
-            </div>
-            <div>
-              <label>Sauces</label>
-              <div>
-                <label>
-                  <Field
-                    name="sauces"
-                    component="input"
-                    type="checkbox"
-                    value="ketchup"
-                  />{" "}
-                  Ketchup
-                </label>
-                <label>
-                  <Field
-                    name="sauces"
-                    component="input"
-                    type="checkbox"
-                    value="mustard"
-                  />{" "}
-                  Mustard
-                </label>
-                <label>
-                  <Field
-                    name="sauces"
-                    component="input"
-                    type="checkbox"
-                    value="mayonnaise"
-                  />{" "}
-                  Mayonnaise
-                </label>
-                <label>
-                  <Field
-                    name="sauces"
-                    component="input"
-                    type="checkbox"
-                    value="guacamole"
-                  />{" "}
-                  Guacamole 🥑
-                </label>
-              </div>
-            </div>
-            <div>
-              <label>Best Stooge</label>
-              <div>
-                <label>
-                  <Field
-                    name="stooge"
-                    component="input"
-                    type="radio"
-                    value="larry"
-                  />{" "}
-                  Larry
-                </label>
-                <label>
-                  <Field
-                    name="stooge"
-                    component="input"
-                    type="radio"
-                    value="moe"
-                  />{" "}
-                  Moe
-                </label>
-                <label>
-                  <Field
-                    name="stooge"
-                    component="input"
-                    type="radio"
-                    value="curly"
-                  />{" "}
-                  Curly
-                </label>
-              </div>
-            </div> */}
-            {/* <div>
-              <label>Notes</label>
-              <Field name="notes" component="textarea" placeholder="Notes" />
-            </div> */}
-            <div className="buttons">
-              <button type="submit" disabled={submitting || pristine}>
-                Submit
-              </button>
-              <button
-                type="button"
-                onClick={form.reset}
-                disabled={submitting || pristine}
-              >
-                Reset
-              </button>
-            </div>
-            {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
-          </form>
-        )}
-      />
-    </Styles>
+    <PhoneInput
+      containerStyle={{ flex: 1 }}
+      country={"in"}
+      countryCodeEditable={false}
+      disableDropdown
+      value={input.value}
+      onChange={(value) => {
+        input.onChange(value);
+      }}
+    />
   );
 };
+
+class FinalForm extends Component {
+  // console.log(props.addBookingAction("hi dude"));
+  constructor(props) {
+    super(props);
+    this.state = {
+      phone: "",
+      rentDate: new Date(),
+      returnDate: new Date(),
+      isPopUpOpen: false,
+      carName: ""
+    };
+  }
+
+
+  onSubmit = (values) => {
+    console.log("values of form on submit", values);
+    console.log("props of form on submit", this.props);
+    let updatedCarsDetail = this.props.carsDetail.filter((carDetail) => {
+      return this.props.history.location.state.id === carDetail.id;
+    });
+    updatedCarsDetail[0].isBooked = true;
+    updatedCarsDetail[0].bookingDetails = {
+      cusName: values.name,
+      fromDate: values.rentDate,
+      toDate: values.returnDate,
+      contactDetails: {
+        phoneNumber: values.phoneNumber,
+      },
+    };
+    console.log("updatedCarsDetail[0]", updatedCarsDetail[0]);
+
+    this.props.addBookingAction(updatedCarsDetail[0]);
+    this.setState({ isPopUpOpen: !this.state.isPopUpOpen, carName: updatedCarsDetail[0].name });
+  };
+
+
+  render() {
+    console.log("bookingFrom Render");
+    return (
+      <Styles>
+        <>
+          <h1>Booking Form</h1>
+          <Form
+            onSubmit={this.onSubmit}
+            initialValues={{ name: "larry" }}
+            render={({ handleSubmit, form, submitting, pristine, values }) => {
+              console.log("values from form", values);
+              return (
+                <form onSubmit={handleSubmit}>
+                  <div>
+                    <label>Name</label>
+                    <Field
+                      name="name"
+                      component="input"
+                      type="text"
+                      placeholder="Name"
+                    />
+                  </div>
+                  <div>
+                    <label>Phone Number</label>
+                    <Field name="phoneNumber" component={phoneAdapter} />
+                  </div>
+                  <div>
+                    <label>Rent Date</label>
+                    <Field
+                      name="rentDate"
+                      component={({ input }) => {
+                        console.log("props from phoni", input);
+                        return (
+                          <DatePicker
+                            selected={this.state.rentDate}
+                            dateFormat="d MMMM, yyyy"
+                            minDate={new Date()}
+                            onChange={(value) => {
+                              input.onChange(value);
+                              this.setState({ rentDate: value });
+                            }}
+                          />
+                        );
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <label>Return Date</label>
+                    <Field
+                      name="returnDate"
+                      component={({ input }) => {
+                        console.log("props from phoni", input);
+                        return (
+                          <DatePicker
+                          // required={true}
+                          dateFormat="d MMMM, yyyy"
+                            selected={this.state.returnDate}
+                            minDate={values.rentDate}
+                            onChange={(value) => {
+                              input.onChange(value);
+                              this.setState({ returnDate: value });
+                            }}
+                          />
+                        );
+                      }}
+                    />
+                  </div>
+                  <div className="buttons">
+                    <button
+                      type="submit"
+                      // disabled={submitting || pristine}
+                    >
+                      Submit
+                    </button>
+                    {/* <button
+                      type="button"
+                      onClick={form.reset}
+                      disabled={submitting || pristine}
+                    >
+                      Reset
+                    </button> */}
+                  </div>
+                </form>
+              );
+            }}
+          />
+        </>
+        {this.state.isPopUpOpen && (
+          <ModalPopUp
+            show={this.state.isPopUpOpen}
+            rentDate = {moment(this.state.rentDate).format("MMM D, YYYY")}
+            returnDate = {moment(this.state.returnDate).format("MMM D, YYYY")}
+            carName={this.state.carName}
+            onHide={() =>
+              this.setState({ isPopUpOpen: !this.state.isPopUpOpen })
+            }
+          />
+        )}
+      </Styles>
+    );
+  }
+}
 
 function mapStateToProps(state) {
   return { carsDetail: state.carsDetail };
 }
 
-export default connect(mapStateToProps, actions)(FinalForm);
+export default connect(mapStateToProps, actions)(withRouter(FinalForm));

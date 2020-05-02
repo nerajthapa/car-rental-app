@@ -10,7 +10,7 @@ export default [
     wiki: "http://en.wikipedia.org/wiki/Porsche_997",
     img:
       "//upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Porsche_997_Turbo_-_Flickr_-_Alexandre_Pr%C3%A9vot_%288%29.jpg/280px-Porsche_997_Turbo_-_Flickr_-_Alexandre_Pr%C3%A9vot_%288%29.jpg",
-    isBooked: true,
+    isBooked: false,
     bookingDetails: {
       cusName: "",
       contactDetails: {
