@@ -3,17 +3,16 @@ import "./CarCard.sass";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import * as actions from "../../actions";
-import CarDetails from "../CarDetails";
+// import CarDetailsPage from "../CarDetailsPage";
 
+// Text of the button for booking
 function getButtonText(isBooked) {
   if (isBooked) return "Booked";
   return "SELECT";
 }
 
 function CarCard(props) {
-  // const [carDetailPage, setcarDetailPage] = useState(false);
   const {
-    // isSelected = false,
     id,
     name,
     seats,
@@ -27,7 +26,6 @@ function CarCard(props) {
   } = props.car;
   return (
     <>
-      {/* {!carDetailPage ? ( */}
       <div className="car-card">
         <header className="backgrounded">
           <h3>
@@ -38,12 +36,12 @@ function CarCard(props) {
         <div className="card-content backgrounded">
           <img src={img} alt={`${name}`} />
           <div>
-            {/* <p><strong>Location : </strong> {location}</p> */}
             <p>
               <strong>Number of Seats : </strong> {seats}
             </p>
-            {/* <p><strong>Car Type : </strong> {carType}</p> */}
-            {/* <p><strong>Transmission : </strong> {transmission}</p> */}
+            <p>
+              <strong>color : </strong> {color}
+            </p>
           </div>
         </div>
 
@@ -62,6 +60,7 @@ function CarCard(props) {
           >
             {getButtonText(isBooked)}
           </button>
+          {/* check if car card is at details page, if there then dont display the details button */}
           {!props.isDetail ? (
             <button
               onClick={() => {
@@ -90,4 +89,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, actions)(withRouter(CarCard));
-// export default CarCard;

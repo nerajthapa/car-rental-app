@@ -11,8 +11,9 @@ import moment from 'moment'
 import ModalPopUp from "../ModalPopUp";
 import * as actions from "../../actions";
 
+
+// For phone input
 const phoneAdapter = ({ input }) => {
-  console.log("props from phoni", input);
   return (
     <PhoneInput
       containerStyle={{ flex: 1 }}
@@ -28,7 +29,6 @@ const phoneAdapter = ({ input }) => {
 };
 
 class FinalForm extends Component {
-  // console.log(props.addBookingAction("hi dude"));
   constructor(props) {
     super(props);
     this.state = {
@@ -42,8 +42,6 @@ class FinalForm extends Component {
 
 
   onSubmit = (values) => {
-    console.log("values of form on submit", values);
-    console.log("props of form on submit", this.props);
     let updatedCarsDetail = this.props.carsDetail.filter((carDetail) => {
       return this.props.history.location.state.id === carDetail.id;
     });
@@ -56,7 +54,6 @@ class FinalForm extends Component {
         phoneNumber: values.phoneNumber,
       },
     };
-    console.log("updatedCarsDetail[0]", updatedCarsDetail[0]);
 
     this.props.addBookingAction(updatedCarsDetail[0]);
     this.setState({ isPopUpOpen: !this.state.isPopUpOpen, carName: updatedCarsDetail[0].name });
@@ -64,16 +61,14 @@ class FinalForm extends Component {
 
 
   render() {
-    console.log("bookingFrom Render");
     return (
       <Styles>
         <>
           <h1>Booking Form</h1>
           <Form
             onSubmit={this.onSubmit}
-            initialValues={{ name: "larry" }}
+            initialValues={{ name: "Neeraj" }}
             render={({ handleSubmit, form, submitting, pristine, values }) => {
-              console.log("values from form", values);
               return (
                 <form onSubmit={handleSubmit}>
                   <div>
@@ -94,7 +89,6 @@ class FinalForm extends Component {
                     <Field
                       name="rentDate"
                       component={({ input }) => {
-                        console.log("props from phoni", input);
                         return (
                           <DatePicker
                             selected={this.state.rentDate}
@@ -115,10 +109,8 @@ class FinalForm extends Component {
                     <Field
                       name="returnDate"
                       component={({ input }) => {
-                        console.log("props from phoni", input);
                         return (
                           <DatePicker
-                          // required={true}
                           dateFormat="d MMMM, yyyy"
                             selected={this.state.returnDate}
                             minDate={values.rentDate}
@@ -134,17 +126,18 @@ class FinalForm extends Component {
                   <div className="buttons">
                     <button
                       type="submit"
-                      // disabled={submitting || pristine}
+                      disabled={submitting || pristine}
                     >
                       Submit
                     </button>
-                    {/* <button
+                    <button
                       type="button"
-                      onClick={form.reset}
-                      disabled={submitting || pristine}
+                      onClick={()=> {
+                        this.props.history.push('/')
+                      }}
                     >
-                      Reset
-                    </button> */}
+                      Back
+                    </button>
                   </div>
                 </form>
               );

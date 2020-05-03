@@ -3,30 +3,22 @@ import { connect } from "react-redux";
 import moment from "moment";
 import * as actions from "../../actions";
 import CarCard from "../CarCard/CarCard";
-function CarDetails(props) {
+function CarDetailsPage(props) {
   return (
     <>
-      <CarCard car={props.carDetailPage} setcarDetailPage={props.setcarDetailPage} isDetail/>
-      <h5>Car Details</h5>
-      <hr
-        style={
-          {
-            // color: "blue",
-            // backgroundColor: color,
-          }
-        }
+      <CarCard
+        car={props.carDetailPage}
+        // Pass the setcarDetailPage function to reset the carDetailPage hooks
+        setcarDetailPage={props.setcarDetailPage}
+        isDetail
       />
+      <h5>Car Details</h5>
+      <hr />
       <p>Vehicle Number : {props.carDetailPage.vehicleNumber}</p>
       <p>Fuel Type : {props.carDetailPage.fuelType}</p>
+      <p>Color : {props.carDetailPage.color}</p>
       <h5>Current Booking</h5>
-      <hr
-        style={
-          {
-            // color: "blue",
-            // backgroundColor: color,
-          }
-        }
-      />
+      <hr />
       {props.carDetailPage.bookingDetails.cusName && (
         <>
           <p>Name {props.carDetailPage.bookingDetails.cusName}</p>
@@ -52,9 +44,8 @@ function CarDetails(props) {
   );
 }
 
-// export default CarDetails;
 function mapStateToProps(state) {
   return { carsDetail: state.carsDetail };
 }
 
-export default connect(mapStateToProps, actions)(CarDetails);
+export default connect(mapStateToProps, actions)(CarDetailsPage);
