@@ -1,3 +1,42 @@
+This is a basic React and Redux based car rental platform.
+
+React - Used for Front-End
+Redux - Used for State Management.
+Redux-Persist - Used to store Redux State locally within Browser.
+
+
+I have also mentioned comments within the code. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
