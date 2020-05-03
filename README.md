@@ -1,7 +1,7 @@
 This is a basic React and Redux based car rental platform.
 
-React - Used for Front-End
-Redux - Used for State Management.
+React - Used for Front-End,
+Redux - Used for State Management.,
 Redux-Persist - Used to store Redux State locally within Browser.
 
 
